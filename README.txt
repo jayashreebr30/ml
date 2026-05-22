@@ -330,30 +330,22 @@ print(
 print(np.column_stack((y_test, y_pred)))
 
 # Export Decision Tree
-from sklearn.tree import export_graphviz
-from six import StringIO
-from IPython.display import Image
-import pydotplus
+from sklearn import tree
+import matplotlib.pyplot as plt
 
-dot_data = StringIO()
+# Create figure
+plt.figure(figsize=(20,10))
 
-export_graphviz(
+# Plot tree
+tree.plot_tree(
     clf,
-    out_file=dot_data,
-    filled=True,
-    rounded=True,
-    special_characters=True,
     feature_names=feature_cols,
-    class_names=['0', '1']
+    class_names=['0', '1'],
+    filled=True
 )
 
-graph = pydotplus.graph_from_dot_data(
-    dot_data.getvalue()
-)
-
-graph.write_png('diabetes.png')
-
-Image(graph.create_png())
+# Show plot
+plt.show()
 
 
 # 5
