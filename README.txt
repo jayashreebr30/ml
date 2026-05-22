@@ -424,3 +424,86 @@ plt.ylabel('Sepal width')
 plt.xlim(xx.min(), xx.max())
 plt.title('SVC with linear kernel')
 plt.show()
+
+# 3 alter
+import numpy as np
+import pandas as pd
+
+# Column names
+col_names = [
+    'pregnant', 'glucose', 'bp', 'skin',
+    'insulin', 'bmi', 'pedigree', 'age', 'label'
+]
+
+# Load dataset
+pima = pd.read_csv(
+    "pima-indians-diabetes.csv",
+    names=col_names
+)
+
+print(pima.head())
+
+# Split dataset into features and target variable
+feature_cols = [
+    'pregnant', 'glucose', 'bp', 'skin',
+    'insulin', 'bmi', 'pedigree', 'age'
+]
+
+# Features
+x = pima[feature_cols]
+
+# Target variable
+y = pima.label
+
+print(x.head())
+print(y.head())
+
+# Split x and y into training and testing sets
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(
+    x,
+    y,
+    test_size=0.20,
+    random_state=2
+)
+
+print("x values for training\n", x_train.head())
+print("x values for testing\n", x_test.head())
+
+print("y values for training\n", y_train.head())
+print("y values for testing\n", y_test.head())
+
+# Import Logistic Regression model
+from sklearn.linear_model import LogisticRegression
+
+# Initialize model
+logreg = LogisticRegression(max_iter=1000)
+
+# Fit the model
+logreg.fit(x_train, y_train)
+
+# Predict values
+y_pred = logreg.predict(x_test)
+
+print("Predicted values for the test data\n", y_pred)
+
+# Import metrics
+from sklearn import metrics
+
+print("Actual Vs Predicted values")
+print(np.column_stack((y_test, y_pred)))
+
+# Confusion Matrix
+cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
+
+print("Confusion Matrix is")
+print(cnf_matrix)
+
+# Accuracy score
+from sklearn.metrics import accuracy_score
+
+print(
+    "Accuracy:",
+    accuracy_score(y_test, y_pred) * 100
+)
